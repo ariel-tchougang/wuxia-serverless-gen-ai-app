@@ -1,0 +1,249 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  bedrock-demo
+
+  Sample SAM Template for bedrock-demo
+
+Globals:
+  Function:
+    Timeout: 3
+    MemorySize: 128
+
+Resources:
+  BedrockDemoLambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      # RoleName: BedrockDemoLambdaRole
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: bedrock-lambda-AccessPolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action: bedrock:InvokeModel
+                Resource:
+                  - arn:aws:bedrock:us-east-1::foundation-model/amazon.titan-text-express-v1
+                  - arn:aws:bedrock:us-east-1::foundation-model/amazon.titan-text-premier-v1:0
+                  - arn:aws:bedrock:us-east-1::foundation-model/mistral.mixtral-8x7b-instruct-v0:1
+
+  LangchainLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      # LayerName: LangchainLayer
+      Description: Langchain dependencies for Bedrock demo
+      ContentUri: layers/langchain_layer_python_311_310/
+      CompatibleRuntimes:
+        - python3.10
+        - python3.11
+        - python3.12
+      CompatibleArchitectures:
+        - x86_64
+
+  BedrockDemoFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      # FunctionName: BedrockDemoFunction
+      CodeUri: bedrock_demo/
+      Handler: app.lambda_handler
+      Runtime: python3.11
+      Architectures:
+        - x86_64
+      Timeout: 300
+      Role: !GetAtt BedrockDemoLambdaRole.Arn
+      Environment:
+        Variables:
+          BEDROCK_MODEL_ID: '<REPLACE_ME>'
+      Layers:
+        - !Ref LangchainLayer
+
+  DemoBedrockApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      # Name: DemoBedrockApi
+      StageName: prod
+      Cors:
+        AllowMethods: "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+        AllowHeaders: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'"
+        AllowOrigin: "'*'"
+      EndpointConfiguration: 
+        Type: REGIONAL
+      DefinitionBody:
+        swagger: 2.0
+        info:
+          title: DemoBedrockApi
+          version: 1.0
+        paths:
+          /:
+            options:
+              consumes:
+                - application/json
+              produces:
+                - application/json
+              responses:
+                "204":
+                  description: CORS preflight
+                  headers:
+                    Access-Control-Allow-Headers:
+                      type: string
+                    Access-Control-Allow-Methods:
+                      type: string
+                    Access-Control-Allow-Origin:
+                      type: string
+              x-amazon-apigateway-integration:
+                type: mock
+                requestTemplates:
+                  application/json: '{statusCode: 200}'
+                responses:
+                  default:
+                    statusCode: "204"
+                    responseParameters:
+                      method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'"
+                      method.response.header.Access-Control-Allow-Methods: "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+                      method.response.header.Access-Control-Allow-Origin: "'*'"
+
+          /generate:
+            options:
+              consumes:
+                - application/json
+              produces:
+                - application/json
+              responses:
+                "204":
+                  description: CORS preflight
+                  headers:
+                    Access-Control-Allow-Headers:
+                      type: string
+                    Access-Control-Allow-Methods:
+                      type: string
+                    Access-Control-Allow-Origin:
+                      type: string
+              x-amazon-apigateway-integration:
+                type: mock
+                requestTemplates:
+                  application/json: '{statusCode: 200}'
+                responses:
+                  default:
+                    statusCode: "204"
+                    responseParameters:
+                      method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'"
+                      method.response.header.Access-Control-Allow-Methods: "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+                      method.response.header.Access-Control-Allow-Origin: "'*'"
+            post:
+              consumes:
+                - application/json
+              produces:
+                - application/json
+              x-amazon-apigateway-integration:
+                type: aws_proxy
+                httpMethod: POST
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${BedrockDemoFunction.Arn}/invocations
+                passthroughBehavior: when_no_match
+        x-amazon-apigateway-gateway-responses:
+          DEFAULT_5XX:
+            statusCode: 500
+            responseParameters:
+              gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+
+  DemoBedrockBucket:
+    Type: AWS::S3::Bucket
+  
+  DemoCloudFrontOAC:
+    Type: AWS::CloudFront::OriginAccessControl
+    Properties:
+      OriginAccessControlConfig:
+        Name: BedrockOAC
+        Description: Access control for CloudFront to reach S3
+        OriginAccessControlOriginType: s3
+        SigningBehavior: always
+        SigningProtocol: sigv4
+  
+  DemoCloudFrontDistribution:
+    Type: AWS::CloudFront::Distribution
+    DependsOn:
+    - DemoCloudFrontOAC
+    - DemoBedrockBucket
+    Properties:
+      DistributionConfig:
+        Enabled: true
+        DefaultRootObject: index.html
+        Origins:
+          - Id: S3Origin
+            DomainName: !GetAtt DemoBedrockBucket.RegionalDomainName
+            S3OriginConfig: {}
+            OriginAccessControlId: !GetAtt DemoCloudFrontOAC.Id
+        DefaultCacheBehavior:
+          TargetOriginId: S3Origin
+          ViewerProtocolPolicy: redirect-to-https
+          AllowedMethods:
+            - GET
+            - HEAD
+          CachedMethods:
+            - GET
+            - HEAD
+          ForwardedValues:
+            QueryString: false
+            Cookies:
+              Forward: none
+        ViewerCertificate:
+          CloudFrontDefaultCertificate: true
+
+  DemoBedrockBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    DependsOn:
+    - DemoBedrockBucket
+    - DemoCloudFrontDistribution
+    Properties:
+      Bucket: !Ref DemoBedrockBucket
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: AllowCloudFrontServicePrincipalRead
+            Effect: Allow
+            Principal:
+              Service: cloudfront.amazonaws.com
+            Action: s3:GetObject
+            Resource: !Sub "${DemoBedrockBucket.Arn}/*"
+            Condition:
+              StringEquals:
+                AWS:SourceArn: !Sub "arn:aws:cloudfront::${AWS::AccountId}:distribution/${DemoCloudFrontDistribution}"
+  
+  AllowApiGatewayInvokeLambda:
+    Type: AWS::Lambda::Permission
+    DependsOn:
+      - BedrockDemoFunction
+      - DemoBedrockApi
+    Properties:
+      FunctionName: !Ref BedrockDemoFunction
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${DemoBedrockApi}/*/*/generate
+
+
+Outputs:
+  BedrockDemoApi:
+    Description: "API Gateway endpoint URL for Prod stage for Bedrock Demo function"
+    Value: !Sub "https://${DemoBedrockApi}.execute-api.${AWS::Region}.amazonaws.com/prod/generate"
+
+  BedrockDemoFunction:
+    Description: "Bedrock Demo Lambda Function ARN"
+    Value: !GetAtt BedrockDemoFunction.Arn
+
+  BedrockDemoFunctionIamRole:
+    Description: "IAM Role attached to the Bedrock Demo function"
+    Value: !GetAtt BedrockDemoLambdaRole.Arn
+
+  BedrockCloudFrontUrl:
+    Description: "CloudFront Distribution URL to access S3 content"
+    Value: !Sub "https://${DemoCloudFrontDistribution.DomainName}"
+
