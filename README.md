@@ -3,6 +3,8 @@
 This project demonstrates the use of **Amazon Bedrock** with **AWS Lambda**, **API Gateway**, and **CloudFront** to power a generative AI backend, themed around the Wuxia universe.  
 It showcases prompt engineering, code generation, translation, and analysis using foundation models such as **Titan** and **Mistral**.
 
+![Alt text](/images/web-app-capture.png?raw=true "web-app-capture")
+
 ---
 
 ## 📦 Architecture Overview
