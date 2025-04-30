@@ -15,7 +15,7 @@ It showcases prompt engineering, code generation, translation, and analysis usin
 - **Amazon S3** – Serves static web assets (optional)
 - **CloudFront** – CDN to serve content securely via OAC
 
-![Alt text](/images/architecture.svg?raw=true "Architecture")
+![Alt text](/images/architecture.png?raw=true "Architecture")
 
 ---
 
