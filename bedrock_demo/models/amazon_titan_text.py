@@ -4,12 +4,12 @@ class AmazonTitanText(BedrockModel):
     def __init__(self, model_id):
         super().__init__(model_id)
 
-    def generate_input_data(self, prompt, temperature, topP):
+    def generate_input_data(self, prompt, temperature, top_p):
         return {
             "inputText": prompt,
             "textGenerationConfig": {
                 "temperature": temperature,
-                "topP": topP,
+                "topP": top_p,
                 "maxTokenCount": 1000,
                 "stopSequences": []
             }

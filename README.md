@@ -88,8 +88,11 @@ sam deploy
 
 - You need to activate the models you want to use in Bedrock. The models currently accepted are:
   + amazon.titan-text-premier-v1:0
-  + mistral.mixtral-8x7b-instruct-v0:1
   + amazon.titan-text-express-v1
+  + mistral.mixtral-8x7b-instruct-v0:1
+  + mistral.mistral-7b-instruct-v0:2
+  + Llama 3 70B Instruct: meta.llama3-70b-instruct-v1:0
+  + Llama 3 8B Instruct: meta.llama3-8b-instruct-v1:0
 
 - You need to upload the files in folder ui (index.html, wuxia.css and wuxia.js) to the S3 bucket created by the project so that it can get picked up by CloudFront.
 
@@ -105,7 +108,7 @@ Ideas for next steps:
 
 - Log prompts and completions to DynamoDB
 
-- Add support for more models (Claude, Llama, etc.)
+- Add support for more models (Claude, etc.)
 
 - Add X-Ray support for tracing
 

@@ -5,7 +5,7 @@ class BedrockModel(ABC):
         self.model_id = model_id
 
     @abstractmethod
-    def generate_input_data(self, prompt, temperature, topP):
+    def generate_input_data(self, prompt, temperature, top_p):
         pass
 
     @abstractmethod
