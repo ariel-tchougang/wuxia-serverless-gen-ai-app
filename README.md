@@ -25,8 +25,18 @@ This project demonstrates the use of **Amazon Bedrock** with **AWS Lambda**, **A
 ```
 .
 ├── bedrock_demo/                   # Lambda function code
+│   └── models/
+│       ├── amazon_titan_text.py
+│       ├── mistral_generic.py
+│       ├── model_builder.py
+│       └── model_interface.py
+│   └── templates/
+│       ├── template_builder.py
+│       ├── template_interface.py
+│       └── templates.py
 │   └── app.py
-│   └── template.py
+├── images/
+│   └── ...
 ├── layers/
 │   └── langchain_layer_python_311_310/
 │       └── python/...
@@ -99,9 +109,11 @@ Ideas for next steps:
 
 - Add support for more models (Claude, Llama, etc.)
 
+- Add X-Ray support for tracing
+
 ## Clean Up
 
-- First empty the S3 bucket file
+- First empty the S3 bucket
 
 - Then run:
 ``` bash

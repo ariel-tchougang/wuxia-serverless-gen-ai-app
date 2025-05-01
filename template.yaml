@@ -1,14 +1,9 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: >
-  bedrock-demo
+  wuxia-webapp
 
-  Sample SAM Template for bedrock-demo
-
-Globals:
-  Function:
-    Timeout: 3
-    MemorySize: 128
+  Sample SAM Template for wuxia bedrock serverless gen ai app
 
 Resources:
   BedrockDemoLambdaRole:
@@ -59,6 +54,7 @@ Resources:
       Architectures:
         - x86_64
       Timeout: 300
+      MemorySize: 128
       Role: !GetAtt BedrockDemoLambdaRole.Arn
       Environment:
         Variables:
@@ -102,7 +98,7 @@ Resources:
               x-amazon-apigateway-integration:
                 type: mock
                 requestTemplates:
-                  application/json: '{statusCode: 200}'
+                  application/json: '{ statusCode: 200 }'
                 responses:
                   default:
                     statusCode: "204"
@@ -130,7 +126,7 @@ Resources:
               x-amazon-apigateway-integration:
                 type: mock
                 requestTemplates:
-                  application/json: '{statusCode: 200}'
+                  application/json: '{ statusCode: 200 }'
                 responses:
                   default:
                     statusCode: "204"

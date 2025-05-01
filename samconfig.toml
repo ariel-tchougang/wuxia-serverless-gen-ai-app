@@ -4,7 +4,7 @@ version = 0.1
 
 [default]
 [default.global.parameters]
-stack_name = "bedrock-demo"
+stack_name = "wuxia-webapp"
 
 [default.build.parameters]
 cached = true
@@ -17,7 +17,7 @@ lint = true
 capabilities = "CAPABILITY_NAMED_IAM CAPABILITY_IAM"
 confirm_changeset = true
 resolve_s3 = true
-s3_prefix = "bedrock-demo"
+s3_prefix = "wuxia-webapp"
 region = "us-east-1"
 profile = "<REPLACE_WITH_AWS_PROFILE>"
 
