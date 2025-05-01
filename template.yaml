@@ -6,8 +6,19 @@ Description: >
   Sample SAM Template for wuxia bedrock serverless gen ai app
 
 Resources:
+  
+  LoggingTable:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      # TableName: !Ref DynamoDBTableName
+      PrimaryKey:
+        Name: id
+        Type: String
+
   BedrockDemoLambdaRole:
     Type: AWS::IAM::Role
+    DependsOn:
+    - LoggingTable
     Properties:
       # RoleName: BedrockDemoLambdaRole
       AssumeRolePolicyDocument:
@@ -19,6 +30,7 @@ Resources:
             Action: sts:AssumeRole
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+        - arn:aws:iam::aws:policy/AWSXRayDaemonWriteAccess
       Policies:
         - PolicyName: bedrock-lambda-AccessPolicy
           PolicyDocument:
@@ -33,6 +45,25 @@ Resources:
                   - arn:aws:bedrock:us-east-1::foundation-model/mistral.mistral-7b-instruct-v0:2
                   - arn:aws:bedrock:us-east-1::foundation-model/meta.llama3-70b-instruct-v1:0
                   - arn:aws:bedrock:us-east-1::foundation-model/meta.llama3-8b-instruct-v1:0
+        - PolicyName: DynamoDBBasicCrudPolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Sid: AllowDynamoDBCrud
+                Action: 
+                  - dynamodb:GetItem
+                  - dynamodb:DeleteItem
+                  - dynamodb:PutItem
+                  - dynamodb:Scan
+                  - dynamodb:Query
+                  - dynamodb:UpdateItem
+                  - dynamodb:BatchWriteItem
+                  - dynamodb:BatchGetItem
+                  - dynamodb:DescribeTable
+                  - dynamodb:ConditionCheckItem
+                Resource:
+                  - !GetAtt LoggingTable.Arn 
 
   LangchainLayer:
     Type: AWS::Serverless::LayerVersion
@@ -47,8 +78,23 @@ Resources:
       CompatibleArchitectures:
         - x86_64
 
+  XrayLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      # LayerName: XrayLayer
+      Description: XrayLayer dependencies for Bedrock demo
+      ContentUri: layers/xray/
+      CompatibleRuntimes:
+        - python3.10
+        - python3.11
+        - python3.12
+      CompatibleArchitectures:
+        - x86_64
+
   BedrockDemoFunction:
     Type: AWS::Serverless::Function
+    DependsOn:
+    - LoggingTable
     Properties:
       # FunctionName: BedrockDemoFunction
       CodeUri: bedrock_demo/
@@ -58,15 +104,21 @@ Resources:
         - x86_64
       Timeout: 300
       MemorySize: 128
+      Tracing: Active
+      Environment:
+        Variables:
+          LOGGING_TABLE_NAME: !Ref LoggingTable
       Role: !GetAtt BedrockDemoLambdaRole.Arn
       Layers:
         - !Ref LangchainLayer
+        - !Ref XrayLayer
 
   DemoBedrockApi:
     Type: AWS::Serverless::Api
     Properties:
       # Name: DemoBedrockApi
       StageName: prod
+      TracingEnabled: true
       Cors:
         AllowMethods: "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
         AllowHeaders: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'"

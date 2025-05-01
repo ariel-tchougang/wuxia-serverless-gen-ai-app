@@ -1,16 +1,23 @@
 import json
-import boto3
+import boto3 # type: ignore
 import os
 import logging
+import uuid
+from datetime import datetime, timezone
+from decimal import Decimal
 
-from langchain.prompts import ChatPromptTemplate, HumanMessagePromptTemplate
+from langchain.prompts import ChatPromptTemplate, HumanMessagePromptTemplate # type: ignore
 from models.model_builder import BedrockModelBuilder
 from templates.template_builder import TemplateBuilder
+from aws_xray_sdk.core import patch_all # type: ignore
+
+patch_all()
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 bedrock_client = boto3.client('bedrock-runtime')
+dynamodb = boto3.resource("dynamodb")
 
 def lambda_handler(event, context):
     logger.info('Event: %s', json.dumps(event))
@@ -60,6 +67,19 @@ def lambda_handler(event, context):
 
         generated_text = model.parse_output(result)
 
+        # Log to DynamoDB
+        table_name = os.environ.get("LOGGING_TABLE_NAME")
+        table = dynamodb.Table(table_name)
+        safe_input_data = convert_floats(input_data)
+        table.put_item(
+            Item={
+                "id": str(uuid.uuid4()),
+                "timestamp": datetime.now(timezone.utc).isoformat(),
+                "request_body": safe_input_data,
+                "output": generated_text
+            }
+        )
+
         return {
             'statusCode': 200,
             'headers': {
@@ -91,3 +111,13 @@ def lambda_handler(event, context):
             },
             'body': 'Internal Server Error'
         }
+
+def convert_floats(obj):
+    if isinstance(obj, float):
+        return Decimal(str(obj))
+    elif isinstance(obj, dict):
+        return {k: convert_floats(v) for k, v in obj.items()}
+    elif isinstance(obj, list):
+        return [convert_floats(v) for v in obj]
+    else:
+        return obj

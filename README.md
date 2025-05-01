@@ -143,13 +143,11 @@ Ideas for next steps:
 
 - Add authentication with Cognito or JWT
 
-- Log prompts and completions to DynamoDB
-
 - Add support for more models (Claude, DeepSeek, etc.)
 
-- Add X-Ray support for tracing
+## 🧹 Clean Up
 
-## Clean Up
+To remove the deployed resources and avoid unnecessary charges:
 
 - First empty the S3 bucket
 
