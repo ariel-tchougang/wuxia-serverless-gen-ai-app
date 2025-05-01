@@ -108,7 +108,7 @@ Ideas for next steps:
 
 - Log prompts and completions to DynamoDB
 
-- Add support for more models (Claude, etc.)
+- Add support for more models (Claude, DeepSeek, etc.)
 
 - Add X-Ray support for tracing
 
