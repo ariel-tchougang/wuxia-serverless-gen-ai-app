@@ -145,6 +145,8 @@ Ideas for next steps:
 
 - Add support for more models (Claude, DeepSeek, etc.)
 
+- Configure a WAF WebACL to protect your CloudFront distribution as well as your API Gateway against http flood attacks.
+
 ## 🧹 Clean Up
 
 To remove the deployed resources and avoid unnecessary charges:
