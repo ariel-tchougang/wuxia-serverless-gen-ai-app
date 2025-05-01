@@ -56,9 +56,6 @@ Resources:
       Timeout: 300
       MemorySize: 128
       Role: !GetAtt BedrockDemoLambdaRole.Arn
-      Environment:
-        Variables:
-          BEDROCK_MODEL_ID: '<REPLACE_ME>'
       Layers:
         - !Ref LangchainLayer
 
@@ -153,6 +150,9 @@ Resources:
 
   DemoBedrockBucket:
     Type: AWS::S3::Bucket
+    Properties:
+      VersioningConfiguration:
+        Status: Enabled
   
   DemoCloudFrontOAC:
     Type: AWS::CloudFront::OriginAccessControl
@@ -173,6 +173,7 @@ Resources:
       DistributionConfig:
         Enabled: true
         DefaultRootObject: index.html
+        PriceClass: PriceClass_100 
         Origins:
           - Id: S3Origin
             DomainName: !GetAtt DemoBedrockBucket.RegionalDomainName

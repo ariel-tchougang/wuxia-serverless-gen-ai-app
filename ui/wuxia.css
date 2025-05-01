@@ -83,7 +83,8 @@ body {
 }
 
 textarea.textarea,
-input.input {
+input.input,
+.select select {
   background-color: #1c1c1c;
   color: #f5f5dc;
   border: 1px solid #555;

@@ -3,34 +3,35 @@ function callApi(templateType) {
   const contentId = `${templateType}-content`;
   const temperatureId = `${templateType}-temperature`;
   const topPId = `${templateType}-topP`;
-
+  
+  const modelId = document.getElementById('modelSelector').value;
   const content = document.getElementById(contentId).value;
   const temperature = parseFloat(document.getElementById(temperatureId).value);
   const topP = parseFloat(document.getElementById(topPId).value);
 
-  let prefix;
+  let templateId;
   switch (templateType) {
-	case 'generate': prefix = 'generate_code'; break;
-	case 'translate': prefix = 'translate_code'; break;
-	case 'analyze': prefix = 'analyze_code'; break;
-	case 'ask': prefix = 'ask_question'; break;
-	default: prefix = '';
+    case 'generate': templateId = 'generate_code'; break;
+    case 'translate': templateId = 'translate_code'; break;
+    case 'analyze': templateId = 'analyze_code'; break;
+    case 'ask': templateId = 'ask_question'; break;
+    default: templateId = '';
   }
 
-  const requestBody = { prefix, content, temperature, topP };
+  const requestBody = { modelId, templateId, content, temperature, topP };
 
   fetch(apiGatewayUrl, {
-	method: 'POST',
-	headers: { 'Content-Type': 'application/json' },
-	body: JSON.stringify(requestBody)
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(requestBody)
   })
   .then(response => response.text())
   .then(outputText => {
-	document.getElementById('output').value = outputText;
+	  document.getElementById('output').value = outputText;
   })
   .catch(error => {
-	console.error("Error:", error);
-	alert("An error occurred: " + error);
+    console.error("Error:", error);
+    alert("An error occurred: " + error);
   });
 }
 

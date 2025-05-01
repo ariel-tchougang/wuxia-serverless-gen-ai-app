@@ -27,6 +27,19 @@
           </div>
         </div>
 
+        <div class="field">
+          <label class="label has-text-grey-light" for="modelSelector">Choose a Foundation Model</label>
+          <div class="control">
+            <div class="select is-fullwidth">
+              <select id="modelSelector">
+                <option value="amazon.titan-text-express-v1">Titan Text G1 - Express</option>
+                <option value="amazon.titan-text-premier-v1:0" selected>Titan Text G1 - Premier</option>
+                <option value="mistral.mixtral-8x7b-instruct-v0:1">Mixtral 8x7B Instruct</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
         <div class="tabs is-boxed is-fullwidth">
           <ul>
             <li class="is-active"><a data-tab="ask">Ask Question</a></li>

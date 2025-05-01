@@ -91,8 +91,6 @@ sam deploy
   + mistral.mixtral-8x7b-instruct-v0:1
   + amazon.titan-text-express-v1
 
-- You need to set BEDROCK_MODEL_ID environment variable in your lambda function after the deployment.
-
 - You need to upload the files in folder ui (index.html, wuxia.css and wuxia.js) to the S3 bucket created by the project so that it can get picked up by CloudFront.
 
 - This project uses the latest OAC-based CloudFront–S3 setup (not legacy OAI).
@@ -106,8 +104,6 @@ Ideas for next steps:
 - Add authentication with Cognito or JWT
 
 - Log prompts and completions to DynamoDB
-
-- Add a dropdown to choose model from
 
 - Add support for more models (Claude, Llama, etc.)
 

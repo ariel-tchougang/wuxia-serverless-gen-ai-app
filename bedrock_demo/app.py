@@ -17,13 +17,24 @@ def lambda_handler(event, context):
 
     try:
         request_body = json.loads(event['body'])
-        prefix = request_body.get('prefix')
+        template_id = request_body.get('templateId')
         content  = request_body.get('content')
         temperature  = request_body.get('temperature')
-        topP  = request_body.get('topP')
+        top_p  = request_body.get('topP')
+        model_id  = request_body.get('modelId')
 
-        model = BedrockModelBuilder.build(os.environ['BEDROCK_MODEL_ID'])        
-        template = TemplateBuilder.build(prefix).generate_template(context=content)
+        if not model_id or not template_id:
+            message = "Event body is missing one or more required parameters: modelId or templateId"
+            logger.error('message')
+            raise ValueError(message)
+
+        if not temperature or not top_p:
+            message = "Event body is missing one or more required parameters: temperature or topP"
+            logger.error('message')
+            raise ValueError(message)
+
+        model = BedrockModelBuilder.build(model_id)        
+        template = TemplateBuilder.build(template_id).generate_template(context=content)
         
         prompt_template = ChatPromptTemplate(
             messages=[HumanMessagePromptTemplate.from_template(template)],
@@ -32,7 +43,7 @@ def lambda_handler(event, context):
         
         prompt = prompt_template.format(context=content)
 
-        input_data = model.generate_input_data(prompt, temperature, topP)
+        input_data = model.generate_input_data(prompt, temperature, top_p)
 
         logger.info('Input data: %s', json.dumps(input_data))
 
