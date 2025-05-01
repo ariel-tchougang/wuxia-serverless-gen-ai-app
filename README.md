@@ -40,8 +40,10 @@ This project demonstrates the use of **Amazon Bedrock** with **AWS Lambda**, **A
 ├── layers/
 │   └── langchain_layer_python_311_310/
 │       └── python/...
-├── ui/
-│   └── index.html                  # Project front-end ui to upload to the created S3 bucket
+├── ui/                             # Project front-end ui files to upload to the created S3 bucket
+│   ├── index.html
+│   ├── wuxia.css 
+│   └── wuxia.js 
 ├── samconfig.toml  
 ├── template.yaml                   # SAM infrastructure template
 └── README.md
@@ -68,11 +70,11 @@ sam deploy
 
 ## 🧪 Endpoints
 
-| Route             | Method | Description                        |
-|------------------|--------|------------------------------------|
-| `/generate`      | POST   | Invokes the Bedrock Lambda function |
-| `/`              | OPTIONS | CORS preflight                     |
-| `CloudFront URL` | GET    | (Optional) static assets delivery  |
+| Route            | Method  | Description                         |
+|------------------|---------|-------------------------------------|
+| `/generate`      | POST    | Invokes the Bedrock Lambda function |
+| `/`              | OPTIONS | CORS preflight                      |
+| `CloudFront URL` | GET     | (Optional) static assets delivery   |
 
 ## 🛡 IAM & Permissions
 
@@ -91,7 +93,7 @@ sam deploy
 
 - You need to set BEDROCK_MODEL_ID environment variable in your lambda function after the deployment.
 
-- You need to upload the index.html file in folder ui to the S3 bucket created by the project so that it can get picked up by CloudFront.
+- You need to upload the files in folder ui (index.html, wuxia.css and wuxia.js) to the S3 bucket created by the project so that it can get picked up by CloudFront.
 
 - This project uses the latest OAC-based CloudFront–S3 setup (not legacy OAI).
 
