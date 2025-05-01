@@ -16,7 +16,7 @@ This project demonstrates the use of **Amazon Bedrock** with **AWS Lambda**, **A
 - **Amazon S3** – Serves static web assets (optional)
 - **CloudFront** – CDN to serve content securely via OAC
 
-![Alt text](/images/architecture.png?raw=true "Architecture")
+![Alt text](/images/architecture-white-back.png?raw=true "Architecture")
 
 ---
 
