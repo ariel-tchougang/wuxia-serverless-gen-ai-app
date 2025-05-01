@@ -84,6 +84,26 @@ sam deploy
 
   + Inline policy bedrock-lambda-AccessPolicy to invoke selected foundation models
 
+  ```json
+  {
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Action": "bedrock:InvokeModel",
+            "Resource": [
+                "arn:aws:bedrock:us-east-1::foundation-model/amazon.titan-text-express-v1",
+                "arn:aws:bedrock:us-east-1::foundation-model/amazon.titan-text-premier-v1:0",
+                "arn:aws:bedrock:us-east-1::foundation-model/mistral.mixtral-8x7b-instruct-v0:1",
+                "arn:aws:bedrock:us-east-1::foundation-model/mistral.mistral-7b-instruct-v0:2",
+                "arn:aws:bedrock:us-east-1::foundation-model/meta.llama3-70b-instruct-v1:0",
+                "arn:aws:bedrock:us-east-1::foundation-model/meta.llama3-8b-instruct-v1:0"
+            ],
+            "Effect": "Allow"
+        }
+    ]
+  }
+  ```
+
 ## 📌 Important
 
 - You need to activate the models you want to use in Bedrock. The models currently accepted are:
