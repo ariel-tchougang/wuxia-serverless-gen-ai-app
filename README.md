@@ -91,8 +91,8 @@ sam deploy
   + amazon.titan-text-express-v1
   + mistral.mixtral-8x7b-instruct-v0:1
   + mistral.mistral-7b-instruct-v0:2
-  + Llama 3 70B Instruct: meta.llama3-70b-instruct-v1:0
-  + Llama 3 8B Instruct: meta.llama3-8b-instruct-v1:0
+  + meta.llama3-70b-instruct-v1:0
+  + meta.llama3-8b-instruct-v1:0
 
 - You need to upload the files in folder ui (index.html, wuxia.css and wuxia.js) to the S3 bucket created by the project so that it can get picked up by CloudFront.
 
