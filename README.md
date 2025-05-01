@@ -82,6 +82,23 @@ sam deploy
 
   + AWSLambdaBasicExecutionRole
 
+  ```json
+  {
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+            ],
+            "Resource": "*"
+        }
+    ]
+  }
+  ```
+
   + Inline policy bedrock-lambda-AccessPolicy to invoke selected foundation models
 
   ```json
