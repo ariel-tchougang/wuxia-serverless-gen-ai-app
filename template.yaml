@@ -191,6 +191,16 @@ Resources:
                 - application/json
               produces:
                 - application/json
+              responses:
+                "200":
+                  description: Successful response
+                  headers:
+                    Access-Control-Allow-Headers:
+                      type: string
+                    Access-Control-Allow-Methods:
+                      type: string
+                    Access-Control-Allow-Origin:
+                      type: string
               x-amazon-apigateway-integration:
                 type: aws_proxy
                 httpMethod: POST
@@ -198,10 +208,18 @@ Resources:
                   Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${BedrockDemoFunction.Arn}/invocations
                 passthroughBehavior: when_no_match
         x-amazon-apigateway-gateway-responses:
+          DEFAULT_4XX:
+            statusCode: 401
+            responseParameters:
+              gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+              gatewayresponse.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'"
+              gatewayresponse.header.Access-Control-Allow-Methods: "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
           DEFAULT_5XX:
             statusCode: 500
             responseParameters:
               gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+              gatewayresponse.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'"
+              gatewayresponse.header.Access-Control-Allow-Methods: "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
 
   DemoBedrockBucket:
     Type: AWS::S3::Bucket

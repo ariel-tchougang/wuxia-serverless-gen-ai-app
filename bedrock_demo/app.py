@@ -30,6 +30,11 @@ def lambda_handler(event, context):
         top_p  = request_body.get('topP')
         model_id  = request_body.get('modelId')
 
+        if not content:
+            message = "Content query is missing"
+            logger.error('message')
+            raise ValueError(message)
+
         if not model_id or not template_id:
             message = "Event body is missing one or more required parameters: modelId or templateId"
             logger.error('message')

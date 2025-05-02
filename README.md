@@ -16,7 +16,7 @@ This project demonstrates the use of **Amazon Bedrock** with **AWS Lambda**, **A
 - **Amazon S3** – Serves static web assets (optional)
 - **CloudFront** – CDN to serve content securely via OAC
 
-![Alt text](/images/architecture-white-back.png?raw=true "Architecture")
+![Alt text](/images/architecture.png?raw=true "Architecture")
 
 ---
 
@@ -40,8 +40,13 @@ This project demonstrates the use of **Amazon Bedrock** with **AWS Lambda**, **A
 ├── layers/
 │   └── langchain_layer_python_311_310/
 │       └── python/...
-├── ui/                             # Project front-end ui files to upload to the created S3 bucket
+├── ui/                             # Project UI files to upload to the created S3 bucket
 │   ├── index.html
+│   ├── wuxia.css 
+│   └── wuxia.js 
+├── cognito-integration/            # Project UI files to upload to the created S3 bucket to use with Cognito
+│   ├── index.html
+│   ├── cognito.js 
 │   ├── wuxia.css 
 │   └── wuxia.js 
 ├── samconfig.toml  
@@ -141,7 +146,7 @@ sam deploy
 
 Ideas for next steps:
 
-- Add authentication with Cognito or JWT
+- 🔐 Add authentication with Cognito or JWT: check [here](./cognito-integration/README.md) 
 
 - Add support for more models (Claude, DeepSeek, etc.)
 

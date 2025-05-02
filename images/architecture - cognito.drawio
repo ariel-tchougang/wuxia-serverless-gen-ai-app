@@ -138,14 +138,39 @@
         <mxCell id="NCmripUGA88qWUlad1xQ-59" value="&lt;b&gt;Amazon Bedrock API&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="598" y="410" width="79" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="ynNYg1OQ8hxfU6B-teCh-1" value="" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;fillColor=#C925D1;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.dynamodb;" vertex="1" parent="1">
+        <mxCell id="ynNYg1OQ8hxfU6B-teCh-1" value="" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;fillColor=#C925D1;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.dynamodb;" parent="1" vertex="1">
           <mxGeometry x="680" y="80" width="78" height="78" as="geometry" />
         </mxCell>
-        <mxCell id="ynNYg1OQ8hxfU6B-teCh-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;strokeWidth=3;" edge="1" parent="1" source="NCmripUGA88qWUlad1xQ-6" target="ynNYg1OQ8hxfU6B-teCh-1">
+        <mxCell id="ynNYg1OQ8hxfU6B-teCh-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;strokeWidth=3;" parent="1" source="NCmripUGA88qWUlad1xQ-6" target="ynNYg1OQ8hxfU6B-teCh-1" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="ynNYg1OQ8hxfU6B-teCh-4" value="&lt;font style=&quot;font-size: 12px;&quot;&gt;&lt;b&gt;Log queries&lt;br&gt;and output&lt;/b&gt;&lt;/font&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="ynNYg1OQ8hxfU6B-teCh-3">
+        <mxCell id="ynNYg1OQ8hxfU6B-teCh-4" value="&lt;font style=&quot;font-size: 12px;&quot;&gt;&lt;b&gt;Log queries&lt;br&gt;and output&lt;/b&gt;&lt;/font&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="ynNYg1OQ8hxfU6B-teCh-3" vertex="1" connectable="0">
           <mxGeometry x="-0.2155" y="1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="6i-4X0f1qIyxxYPBIZHH-1" value="&lt;b&gt;Amazon&lt;br&gt;Cognito&lt;/b&gt;" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;fillColor=#DD344C;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.cognito;" vertex="1" parent="1">
+          <mxGeometry x="210" y="440" width="78" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="6i-4X0f1qIyxxYPBIZHH-3" value="" style="endArrow=classic;html=1;rounded=0;strokeWidth=3;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="288" y="440" as="sourcePoint" />
+            <mxPoint x="400" y="340" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="6i-4X0f1qIyxxYPBIZHH-4" value="&lt;font style=&quot;font-size: 12px;&quot;&gt;&lt;b&gt;Authorize&lt;br&gt;Access&lt;/b&gt;&lt;/font&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="6i-4X0f1qIyxxYPBIZHH-3">
+          <mxGeometry x="-0.0951" y="1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="6i-4X0f1qIyxxYPBIZHH-5" value="" style="endArrow=classic;html=1;rounded=0;strokeWidth=3;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="220" y="339" as="sourcePoint" />
+            <mxPoint x="220" y="439" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="6i-4X0f1qIyxxYPBIZHH-6" value="&lt;font style=&quot;font-size: 12px;&quot;&gt;&lt;b&gt;Authenticate&lt;br&gt;users&lt;/b&gt;&lt;/font&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="6i-4X0f1qIyxxYPBIZHH-5">
+          <mxGeometry x="0.18" y="-2" relative="1" as="geometry">
             <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>

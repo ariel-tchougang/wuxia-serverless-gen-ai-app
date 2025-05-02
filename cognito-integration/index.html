@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wuxiaverse: GenAI Temple of Knowledge</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:wght@600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="wuxia.css">
+</head>
+
+<body>
+  <section class="hero">
+    <div class="container has-text-centered">
+      <h1 class="title is-2">Wuxiaverse: Serverless GenAI App</h1>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="box">
+        <div class="field">
+          <label class="label has-text-grey-light" for="apiGatewayUrl">API Gateway URL</label>
+          <div class="control">
+            <input class="input" type="text" id="apiGatewayUrl" placeholder="Enter API Gateway URL">
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label has-text-grey-light" for="modelSelector">Choose a Foundation Model</label>
+          <div class="control">
+            <div class="select is-fullwidth">
+              <select id="modelSelector">
+                <option value="amazon.titan-text-premier-v1:0" selected>Titan Text G1 - Premier</option>
+                <option value="amazon.titan-text-express-v1">Titan Text G1 - Express</option>
+                <option value="mistral.mixtral-8x7b-instruct-v0:1">Mixtral 8x7B Instruct</option>                
+                <option value="mistral.mistral-7b-instruct-v0:2">Mistral 7B Instruct</option>
+                <option value="meta.llama3-70b-instruct-v1:0">Llama 3 70B Instruct</option>
+                <option value="meta.llama3-8b-instruct-v1:0">Llama 3 8B Instruct</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="tabs is-boxed is-fullwidth">
+          <ul>
+            <li class="is-active"><a data-tab="ask">Ask Question</a></li>
+            <li><a data-tab="generate">Generate SQL Queries</a></li>
+            <li><a data-tab="translate">Legacy Code Translation</a></li>
+            <li><a data-tab="analyze">Code Analysis</a></li>
+          </ul>
+        </div>
+
+        <div id="tab-content">
+          <div class="tab-pane is-active" data-pane="ask">
+            <div class="prompt-template" id="ask-template">
+Your task is to answer the question as asked.
+
+Review the provided request in context:
+            </div>
+            <div class="field">
+              <div class="control">
+                <textarea class="textarea" id="ask-content" placeholder="Enter your question..."></textarea>
+              </div>
+            </div>
+            <div class="slider-group">
+              <div class="field">
+                <label class="label has-text-grey-light">Temperature <span></span></label>
+                <input class="slider" step="0.05" min="0" max="1" value="0.7" type="range" id="ask-temperature">
+              </div>
+              <div class="field">
+                <label class="label has-text-grey-light">Top P <span></span></label>
+                <input class="slider" step="0.05" min="0" max="1" value="0.95" type="range" id="ask-topP">
+              </div>
+            </div>
+            <div class="field">
+              <button class="button is-custom is-fullwidth" onclick="callApi('ask')">Submit</button>
+            </div>
+          </div>
+
+          <div class="tab-pane" data-pane="generate">
+            <div class="prompt-template" id="generate-template">
+Wuxiaverse has a database with a table named `content_library` containing information about their wuxia light novels content. The table has the following columns:
+- `release_date` (YYYY-MM-DD)
+- `content_id`
+- `chapter_count`
+- `view_count`
+- `summary`
+
+Generate SQL queries based on the following context:
+            </div>
+            <div class="field">
+              <div class="control">
+                <textarea class="textarea" id="generate-content" placeholder="Enter your SQL prompt..."></textarea>
+              </div>
+            </div>
+            <div class="slider-group">
+              <div class="field">
+                <label class="label has-text-grey-light">Temperature <span></span></label>
+                <input class="slider" step="0.05" min="0" max="1" value="0.7" type="range" id="generate-temperature">
+              </div>
+              <div class="field">
+                <label class="label has-text-grey-light">Top P <span></span></label>
+                <input class="slider" step="0.05" min="0" max="1" value="0.95" type="range" id="generate-topP">
+              </div>
+            </div>
+            <div class="field">
+              <button class="button is-custom is-fullwidth" onclick="callApi('generate')">Submit</button>
+            </div>
+          </div>
+
+          <div class="tab-pane" data-pane="translate">
+            <div class="prompt-template" id="translate-template">
+You are a highly skilled software engineer tasked with translating the following legacy Java code to Python.
+
+Provide translated Python code, explanations for changes, and follow best practices.
+            </div>
+            <div class="field">
+              <div class="control">
+                <textarea class="textarea" id="translate-content" placeholder="Enter your legacy code..."></textarea>
+              </div>
+            </div>
+            <div class="slider-group">
+              <div class="field">
+                <label class="label has-text-grey-light">Temperature <span></span></label>
+                <input class="slider" step="0.05" min="0" max="1" value="0.7" type="range" id="translate-temperature">
+              </div>
+              <div class="field">
+                <label class="label has-text-grey-light">Top P <span></span></label>
+                <input class="slider" step="0.05" min="0" max="1" value="0.95" type="range" id="translate-topP">
+              </div>
+            </div>
+            <div class="field">
+              <button class="button is-custom is-fullwidth" onclick="callApi('translate')">Submit</button>
+            </div>
+          </div>
+
+          <div class="tab-pane" data-pane="analyze">
+            <div class="prompt-template" id="analyze-template">
+Please provide a detailed explanation and interpretation for the following code snippet.
+
+Include purpose, step-by-step explanation, data structures, optimizations, libraries used, and pitfalls.
+            </div>
+            <div class="field">
+              <div class="control">
+                <textarea class="textarea" id="analyze-content" placeholder="Enter code for analysis..."></textarea>
+              </div>
+            </div>
+            <div class="slider-group">
+              <div class="field">
+                <label class="label has-text-grey-light">Temperature <span></span></label>
+                <input class="slider" step="0.05" min="0" max="1" value="0.7" type="range" id="analyze-temperature">
+              </div>
+              <div class="field">
+                <label class="label has-text-grey-light">Top P <span></span></label>
+                <input class="slider" step="0.05" min="0" max="1" value="0.95" type="range" id="analyze-topP">
+              </div>
+            </div>
+            <div class="field">
+              <button class="button is-custom is-fullwidth" onclick="callApi('analyze')">Submit</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="box">
+        <div class="field">
+          <label class="label has-text-grey-light">Output</label>
+          <div class="control">
+            <textarea class="textarea" id="output" placeholder="" readonly></textarea>
+          </div>
+        </div>
+      </div>
+
+      <p class="has-text-centered has-text-grey-light"><em>Please review outputs carefully before use.</em></p>
+    </div>
+  </section>
+
+  <script src="cognito.js"></script>
+  <script src="wuxia.js"></script>
+
+</body>
+</html>
