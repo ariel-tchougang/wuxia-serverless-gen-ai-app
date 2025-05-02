@@ -72,11 +72,10 @@ This will ensure every request to your endpoint is blocked unless a valid token 
     - Store the **ID token** in sessionStorage.
 
 The code is provided:
-- cognito.js: new file to handle authentication process
+- cognito.js: new file to handle authentication process. **Make sure to set accordingly**:
+  - const COGNITO_DOMAIN = 'https://**YOUR-COGNITO-DOMAIN**.auth.**AWS-REGION**.amazoncognito.com' 
+  - const CLIENT_ID = '**YOUR-COGNITO-CLIENT-ID**'
 
-Make sure to set accordingly:
-    - COGNITO_DOMAIN = 'https://<your-cognito-domain>.auth.<aws-region>.amazoncognito.com'
-    - CLIENT_ID = '<your-client-id>'
 
 ```javascript
 const COGNITO_DOMAIN = 'https://<your-cognito-domain>.auth.<aws-region>.amazoncognito.com';
