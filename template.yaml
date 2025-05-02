@@ -128,7 +128,8 @@ Resources:
       DefinitionBody:
         swagger: 2.0
         info:
-          title: DemoBedrockApi
+          title: wuxia-demo-api
+          description: API for wuxia bedrock serverless gen ai app
           version: 1.0
         paths:
           /:
