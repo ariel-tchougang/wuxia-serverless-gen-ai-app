@@ -48,7 +48,8 @@ This project demonstrates the use of **Amazon Bedrock** with **AWS Lambda**, **A
 │   ├── index.html
 │   ├── cognito.js 
 │   ├── wuxia.css 
-│   └── wuxia.js 
+│   ├── wuxia.js 
+│   └── README.md
 ├── samconfig.toml  
 ├── template.yaml                   # SAM infrastructure template
 └── README.md
